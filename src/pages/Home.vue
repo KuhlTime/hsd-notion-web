@@ -31,6 +31,9 @@
     <p style="font-size: 12px; color: grey">
       Das senden der Einladung kann einige Tage dauern
     </p>
+    <p style="font-size: 12px; color: red" v-if="error !== undefined">
+      {{ error }}
+    </p>
   </div>
 </template>
 
@@ -44,25 +47,30 @@ export default {
   data() {
     return {
       email: "",
+      error: undefined,
     };
   },
   methods: {
-    registerEmail(email) {
+    registerEmail() {
       fetch("https://hsd-notion-api.herokuapp.com/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: {
-          email,
-        },
+        body: JSON.stringify({
+          email: this.email + "@study.hs-duesseldorf.de",
+        }),
       })
         .then((res) => res.text())
         .then((text) => {
           console.log(text);
           this.$emit("submit");
+          this.error = undefined;
         })
-        .catch(console.error.bind(console));
+        .catch((error) => {
+          console.error(error);
+          this.error = error.message;
+        });
     },
     submit() {
       if (this.valid) {
