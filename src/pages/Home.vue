@@ -47,9 +47,26 @@ export default {
     };
   },
   methods: {
+    registerEmail(email) {
+      fetch("https://hsd-notion-api.herokuapp.com/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {
+          email,
+        },
+      })
+        .then((res) => res.text())
+        .then((text) => {
+          console.log(text);
+          this.$emit("submit");
+        })
+        .catch(console.error.bind(console));
+    },
     submit() {
       if (this.valid) {
-        this.$emit("submit");
+        this.registerEmail(this.email);
       }
     },
   },
