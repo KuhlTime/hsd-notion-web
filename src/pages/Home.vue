@@ -19,7 +19,9 @@
     <span style="margin-left: 4px"> @study.hs-duesseldorf.de </span>
     <br />
     <br />
+    <HydrogenSpinner v-if="loading"></HydrogenSpinner>
     <HydrogenButton
+      v-if="!loading"
       :disabled="!valid"
       @click="submit()"
       flavour="primary"
@@ -40,18 +42,22 @@
 <script>
 import HydrogenInput from "../components/HydrogenInput";
 import HydrogenButton from "../components/HydrogenButton";
+import HydrogenSpinner from "../components/HydrogenSpinner.vue";
 
 export default {
   name: "Home",
-  components: { HydrogenInput, HydrogenButton },
+  components: { HydrogenInput, HydrogenButton, HydrogenSpinner },
   data() {
     return {
       email: "",
       error: undefined,
+      loading: false,
     };
   },
   methods: {
     registerEmail() {
+      this.loading = true;
+
       fetch("https://hsd-notion-api.herokuapp.com/user", {
         method: "POST",
         headers: {
@@ -65,10 +71,12 @@ export default {
         .then((text) => {
           console.log(text);
           this.$emit("submit");
+          this.loading = false;
           this.error = undefined;
         })
         .catch((error) => {
           console.error(error);
+          this.loading = false;
           this.error = error.message;
         });
     },
