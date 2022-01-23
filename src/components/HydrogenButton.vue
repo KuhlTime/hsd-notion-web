@@ -71,9 +71,6 @@ button.full-width {
 }
 
 button:disabled {
-  /* Style */
-  text-decoration: line-through;
-
   /* Interaction */
   cursor: not-allowed;
 }
