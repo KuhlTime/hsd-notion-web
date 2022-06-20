@@ -18,6 +18,14 @@
     />
     <span style="margin-left: 4px"> @study.hs-duesseldorf.de </span>
     <br />
+    <p>Eingeladen von: </p>
+    <HydrogenInput
+      v-model="invitedBy"
+      @submit="submit()"
+      style="max-width: 40%; width: 100%"
+      placeholder="Vorname Nachname"
+    />
+    <br />
     <br />
     <HydrogenSpinner v-if="loading"></HydrogenSpinner>
     <HydrogenButton
@@ -31,7 +39,9 @@
     <br />
     <br />
     <p style="font-size: 12px; color: grey">
-      Das senden der Einladung kann einige Tage dauern
+      ⚠️ Bei Notion musst du dich nach erhalten der Einladung mit deiner HSD Adresse registrieren!
+      <br />
+      Das senden der Einladung kann einige Tage dauern. Wenn ihr nichts von mir hört schreibt mich gerne an.
     </p>
     <p style="font-size: 12px; color: red" v-if="error !== undefined">
       {{ error }}
@@ -50,6 +60,7 @@ export default {
   data() {
     return {
       email: "",
+      invitedBy: "",
       error: undefined,
       loading: false,
     };
@@ -65,6 +76,7 @@ export default {
         },
         body: JSON.stringify({
           email: this.email + "@study.hs-duesseldorf.de",
+          invitedBy: this.invitedBy
         }),
       })
         .then((res) => res.text())
@@ -88,7 +100,7 @@ export default {
   },
   computed: {
     valid() {
-      return this.email.split(".").length === 2;
+      return this.email.split(".").length === 2 && this.invitedBy !== "";
     },
   },
 };

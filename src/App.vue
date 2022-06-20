@@ -41,9 +41,6 @@ export default {
 }
 
 footer {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 24px 0;
 }
 </style>
